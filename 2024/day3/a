@@ -1,0 +1,74 @@
+data = [x.rstrip() for x in open("input.txt").readlines()]
+
+def rest(li):
+    ret = []
+    for l in li:
+        c = list(map(int, l.split(',')))
+        ret.append(c)
+    return ret
+
+rules = []
+updates = []
+
+for i in range(len(data)):
+    cur = data[i]
+    if cur == "": 
+        updates = rest(data[i+1:])
+        break
+    else: rules.append(tuple(map(int, cur.split('|'))))
+
+print(rules)
+print(updates)
+
+re = 0
+for up in updates:
+    b=False
+    for i in range(len(up)):
+        c = up[i]
+        cr = list(filter(lambda x: x[0] == c or x[1] == c, rules))
+        print(c, cr)
+        for rule in cr:
+            check = up[i:] if rule[0] == c else up[:i]
+            if rule[0] == c:
+                if rule[1] not in check and rule[1] in up: 
+                    b = True
+                    break
+            else:
+                if rule[0] not in check and rule[0] in up: 
+                    b = True
+                    break
+
+        if b: break
+    if not b: re += up[len(up)//2 if len(up) % 2 != 0 else len(up)/2 - 1]
+print(re)
+
+
+
+
+
+# r = [(a,b) .. (y,z)]
+#where a comes before b
+# def safe(l, r):
+#     for n in l:
+#         for gr in cr:
+#             if 
+
+
+
+'''
+S.S
+.A.
+M.M
+
+M.M
+.A.
+S.S
+
+M.S
+.A.
+M.S
+
+S.M
+.A.
+S.M
+'''
